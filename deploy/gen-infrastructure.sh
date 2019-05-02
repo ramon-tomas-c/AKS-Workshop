@@ -1,11 +1,11 @@
 #!/bin/sh
 
 # Create RG
-az group create --name beers-rg --location westeurope
+az group create --name <resource-group> --location westeurope
 
 # Create cluster
 az aks create \
-    --resource-group PlainConcepts-K8SWorkshop-Dev \
+    --resource-group <resource-group> \
     --name mybeersakscluster \
     --node-count 1 \
     --enable-addons monitoring \
@@ -15,10 +15,10 @@ az aks create \
 az aks install-cli
 
 # Get Credentials
-az aks get-credentials --resource-group PlainConcepts-K8SWorkshop-Dev --name mybeersakscluster
+az aks get-credentials --resource-group <resource-group> --name mybeersakscluster
 
 # Create ACR
-az acr create -n myrepo -g PlainConcepts-K8SWorkshop-Dev --sku Standard --admin-enabled true
+az acr create -n myrepo -g <resource-group> --sku Standard --admin-enabled true
 
 # Create secret to connect to ACR
 kubectl create secret docker-registry acr-auth --docker-server <acr-login-server> --docker-username <username> --docker-password <password> --docker-email <email-address>
