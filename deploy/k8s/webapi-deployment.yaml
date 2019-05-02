@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webapi
+spec:
+  template:
+    metadata:
+      labels:
+        app: beers
+        component: webapi
+    spec:
+      containers:
+      - name: webapi
+        image: myrepodemo.azurecr.io/webapi
+        imagePullPolicy: Always
+        env:
+        - name: ConnectionString
+          value: Server=sql-data;Database=BeersDb;User Id=sa;Password=Pass@word
+        - name: BlobStorageUrl
+          value: https://demo.blob.core.windows.net/beers/
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 20
+          periodSeconds: 60 
+        livenessProbe:
+          httpGet:
+            path: /hc/self
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 30
+          periodSeconds: 60                 
+      imagePullSecrets:
+      - name: acr-auth
+---

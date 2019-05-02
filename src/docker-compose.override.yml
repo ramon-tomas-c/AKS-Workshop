@@ -1,0 +1,44 @@
+version: '3.4'
+
+services:
+  webapp:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ApiUrl=${API_URL_PROD:-http://webapi}
+    ports:
+      - "3000:80"
+
+  webapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:80
+      - ConnectionString=${BEERS_DB_PROD:-Server=sql.data;Database=BeersDb;User Id=sa;Password=Pass@word}
+      - BlobStorageUrl=${BLOB_STORAGE_URL_PROD:-https://myblob.blob.core.windows.net/beers/}      
+      - UseKeyVault=${USEKEYVAULT:-False}
+      - Vault__Name=${VAULT__NAME:-""}
+      - Vault__ClientId=${Vault__CLIENTID:-""}
+      - Vault__ClientSecret=${VAULT__CLIENTSECRET:-""}
+      - UseBlob=false
+    ports:
+      - "3001:80"
+
+  webapi-tests:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionString=${BEERS_DB_PROD:-Server=sql.data;Database=BeersDb;User Id=sa;Password=Pass@word}
+      - BlobStorageUrl=${BLOB_STORAGE_URL_PROD:-https://myblob.blob.core.windows.net/beers/}
+    ports:
+      - "80"
+    entrypoint:
+      - dotnet
+      - test
+      - --logger
+      - trx;LogFileName=/tests/test-results.xml
+
+  sql.data:
+    environment:
+      - SA_PASSWORD=Pass@word
+      - ACCEPT_EULA=Y
+    ports:
+      - "5433:1433" 

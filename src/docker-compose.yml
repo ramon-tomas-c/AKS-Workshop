@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  webapp:
+    image: ${DOCKER_REGISTRY}webapp
+    build:
+      context: .
+      dockerfile: WebApp/Dockerfile
+    depends_on:
+      - webapi
+
+  webapi:
+    image: ${DOCKER_REGISTRY}webapi
+    build:
+      context: .
+      dockerfile: WebApi/Dockerfile
+    depends_on:
+      - sql.data
+
+  webapi-tests:
+    image: ${DOCKER_REGISTRY}webapi.tests
+    build:
+      context: .
+      dockerfile: WebApi/Dockerfile
+      target: test
+    volumes: 
+      - ${BUILD_ARTIFACTSTAGINGDIRECTORY:-./tests-results/}:/tests
+    depends_on:
+      - sql.data
+
+  sql.data:
+    image: microsoft/mssql-server-linux:2017-latest

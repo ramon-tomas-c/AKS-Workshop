@@ -1,0 +1,37 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  template:
+    metadata:
+      labels:
+        app: beers
+        component: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: myrepodemo.azurecr.io/webapp
+        imagePullPolicy: Always
+        env:
+        - name: ApiUrl
+          value: http://webapi
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 20
+          periodSeconds: 60 
+        livenessProbe:
+          httpGet:
+            path: /hc
+            port: 80
+            scheme: HTTP 
+          initialDelaySeconds: 30
+          periodSeconds: 60                 
+      imagePullSecrets:
+      - name: acr-auth
+---
