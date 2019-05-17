@@ -14,7 +14,7 @@ spec:
         image: myrepodemo.azurecr.io/webapp
         imagePullPolicy: Always
         env:
-        - name: ApiUrl
+        - name: ApiUrl          
           value: http://webapi
         ports:
         - containerPort: 80

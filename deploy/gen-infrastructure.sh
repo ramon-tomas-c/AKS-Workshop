@@ -22,3 +22,6 @@ az acr create -n myrepo -g <resource-group> --sku Standard --admin-enabled true
 
 # Create secret to connect to ACR
 kubectl create secret docker-registry acr-auth --docker-server <acr-login-server> --docker-username <username> --docker-password <password> --docker-email <email-address>
+
+# Add admin role to dashboard service
+kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
