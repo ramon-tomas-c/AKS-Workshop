@@ -25,3 +25,10 @@ kubectl create secret docker-registry acr-auth --docker-server <acr-login-server
 
 # Add admin role to dashboard service
 kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
+
+# Install Helm
+kubectl apply -f tiller-rbac.yaml
+helm init --service-account tiller
+
+# Deploy nginx controller
+helm install stable/nginx-ingress --namespace kube-system --set controller.replicaCount=2
