@@ -16,24 +16,8 @@ spec:
         env:
         - name: ConnectionString
           value: Server=sql-data;Database=BeersDb;User Id=sa;Password=Pass@word
-        - name: BlobStorageUrl
-          value: https://demo.blob.core.windows.net/beers/
         ports:
-        - containerPort: 80
-        readinessProbe:
-          httpGet:
-            path: /hc
-            port: 80
-            scheme: HTTP 
-          initialDelaySeconds: 20
-          periodSeconds: 60 
-        livenessProbe:
-          httpGet:
-            path: /hc/self
-            port: 80
-            scheme: HTTP 
-          initialDelaySeconds: 30
-          periodSeconds: 60                 
+        - containerPort: 80         
       imagePullSecrets:
       - name: acr-auth
 ---
