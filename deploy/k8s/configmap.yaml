@@ -4,3 +4,4 @@ metadata:
   name: beersapp-config
 data:  
   ASPNETCORE_ENVIRONMENT: Development
+  api_url: http://webapi

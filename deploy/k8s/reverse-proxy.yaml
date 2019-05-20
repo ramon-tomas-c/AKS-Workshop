@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: beers
+    component: rproxy
+  name: rproxy
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: beers
+    component: rproxy
+  type: LoadBalancer
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: rproxy
+spec:
+  template:
+    metadata:
+      labels:
+        app: beers
+        component: rproxy
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.11.10-alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/usr/sbin/nginx","-s","quit"]
+        volumeMounts:
+        - name: config
+          mountPath: /etc/nginx
+      volumes:
+      - name: config
+        configMap:
+          name: config-files
+          items:
+          - key: nginx-conf
+            path: nginx.conf

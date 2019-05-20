@@ -39,6 +39,11 @@ namespace WebApp
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            if (!string.IsNullOrEmpty(Configuration["PATH_BASE"]))
+            {
+                app.UsePathBase(Configuration["PATH_BASE"]);
+            }
+
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
