@@ -14,6 +14,11 @@ spec:
         image: myrepodemo.azurecr.io/webapi
         imagePullPolicy: Always
         env:
+        - name: ASPNETCORE_ENVIRONMENT
+          valueFrom:
+            configMapKeyRef:
+             name: beersapp-config
+             key: app_environment
         - name: ConnectionString
           valueFrom:
             secretKeyRef:

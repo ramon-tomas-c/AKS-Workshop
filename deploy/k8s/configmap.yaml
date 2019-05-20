@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: beersapp-config
 data:  
-  ASPNETCORE_ENVIRONMENT: Development
+  app_environment: Development
   api_url: http://webapi
