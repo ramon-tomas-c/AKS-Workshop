@@ -31,4 +31,4 @@ kubectl apply -f tiller-rbac.yaml
 helm init --service-account tiller
 
 # Deploy nginx controller
-helm install stable/nginx-ingress --namespace kube-system --set controller.replicaCount=2
+helm install stable/nginx-ingress --name nginx-controller --namespace kube-system --set controller.replicaCount=2

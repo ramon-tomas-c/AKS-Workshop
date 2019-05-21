@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: beersapp-config
+  name: webapp-config
 data:  
   app_environment: Development
-  api_url: http://webapi
+  api_url: {{ .Values.apiUrl }}

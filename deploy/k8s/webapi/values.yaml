@@ -5,16 +5,24 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: stable
+  repository: myrepodemo.azurecr.io/webapi
+  tag: latest
   pullPolicy: IfNotPresent
 
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: "webapi"
 
 service:
   type: ClusterIP
   port: 80
+
+env:
+  configmap:  
+    - name: ASPNETCORE_ENVIRONMENT
+      key: app_environment
+  secrets:  
+    - name: ConnectionString
+      key: connectionstring
 
 ingress:
   enabled: false
@@ -28,6 +36,8 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+connectionString: "Server=sql-data;Database=BeersDb;User Id=sa;Password=Pass@word"
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

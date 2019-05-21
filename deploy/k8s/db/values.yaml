@@ -5,17 +5,26 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: stable
+  repository: microsoft/mssql-server-linux
+  tag: 2017-latest
   pullPolicy: IfNotPresent
 
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: "sql-data"
 
 service:
   type: ClusterIP
-  port: 80
+  port: 1433
 
+env:
+  values:    
+    - name: ACCEPT_EULA
+      value: "Y"
+    - name: MSSQL_PID
+      value: Developer
+    - name: MSSQL_SA_PASSWORD
+      value: Pass@word
+       
 ingress:
   enabled: false
   annotations: {}
@@ -28,7 +37,7 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
-
+  
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little

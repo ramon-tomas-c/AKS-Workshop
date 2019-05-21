@@ -5,29 +5,41 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  tag: stable
+  repository: myrepodemo.azurecr.io/webapp
+  tag: latest
   pullPolicy: IfNotPresent
 
 nameOverride: ""
-fullnameOverride: ""
+fullnameOverride: "webapp"
 
 service:
   type: ClusterIP
   port: 80
 
+env:
+  configmap:  
+    - name: ASPNETCORE_ENVIRONMENT
+      key: app_environment
+    - name: ApiUrl
+      key: api_url
+
 ingress:
-  enabled: false
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  paths: []
+  enabled: true
+  annotations: {
+    kubernetes.io/ingress.class: nginx,
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  }
+  paths: [
+    "/"
+  ]
   hosts:
-    - chart-example.local
+    - mybeerstore.westeurope.cloudapp.azure.com
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+apiUrl: "http://webapi"
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
